@@ -36,7 +36,7 @@ export const login = async userData => {
     auth.isAuthenticated.set(true);
     loadUser();
     errors.set({});
-    navigate('/template', { replace: true });
+    navigate('/dashboard', { replace: true });
   } else {
     console.log(res.data);
     errors.set(res.data);

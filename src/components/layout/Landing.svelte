@@ -8,4 +8,11 @@
   });
 </script>
 
-<h1 class="my-5">Welcome to MEDNOOR</h1>
+<h1 class="content-p">Welcome to MEDNOOR</h1>
+
+<style>
+  .content-p {
+    padding-top: 8rem;
+    padding-bottom: 5rem;
+  }
+</style>

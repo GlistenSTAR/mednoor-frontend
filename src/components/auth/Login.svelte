@@ -24,7 +24,7 @@
   };
 </script>
 
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center content-p">
   <form
     class="text-left py-3 login"
     on:submit|preventDefault={signIn}
@@ -69,5 +69,10 @@
 
   .text-red {
     color: red;
+  }
+
+  .content-p {
+    padding-top: 5rem;
+    padding-bottom: 2rem;
   }
 </style>

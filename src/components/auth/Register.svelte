@@ -27,7 +27,7 @@
   };
 </script>
 
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center content-p">
   <form class="text-left py-3 register" on:submit|preventDefault={signUp}>
     <div class="form-group">
       <label for="firstName">First Name:</label>
@@ -110,5 +110,10 @@
 
   .text-red {
     color: red;
+  }
+
+  .content-p {
+    padding-top: 5rem;
+    padding-bottom: 2rem;
   }
 </style>

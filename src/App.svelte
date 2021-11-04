@@ -13,6 +13,7 @@
 	import Login from "./components/auth/Login.svelte";
 	import Template from "./components/template/Template.svelte";
 	import MyAccount from "./components/myAccount/MyAccount.svelte";
+	import Dashboard from "./components/dashboard/Dashboard.svelte";
 
 	onMount(() => {
 		if (localStorage.token) {
@@ -26,18 +27,21 @@
 	export let url = "";
 </script>
 
-<main>
+<main class="bg-light">
 	<Nabvar />
 	<div class="container">
 		<Router {url}>
 			<Route path="/" component={Landing} />
 			<Route path="/register" component={Register} />
 			<Route path="/login" component={Login} />
-			<PrivateRoute path="/template">
+			<PrivateRoute path="/dashboard/template">
 				<Template />
 			</PrivateRoute>
 			<PrivateRoute path="/myAccount">
 				<MyAccount />
+			</PrivateRoute>
+			<PrivateRoute path="/dashboard">
+				<Dashboard />
 			</PrivateRoute>
 		</Router>
 	</div>
