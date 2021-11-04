@@ -1,19 +1,35 @@
 <script>
+  import { onMount } from "svelte";
+
   import { login } from "../../apis/auth";
+  import { errors } from "../../store";
+
+  onMount(() => {
+    errors.set({});
+  });
 
   let userData = {
     email: "",
     password: "",
   };
 
+  let errs = {};
+
+  errors.subscribe((value) => {
+    errs = value;
+  });
+
   const signIn = () => {
-    const res = login(userData);
-    // console.log(res);
+    login(userData);
   };
 </script>
 
 <div class="d-flex justify-content-center">
-  <form class="text-left py-3 login" on:submit|preventDefault={signIn}>
+  <form
+    class="text-left py-3 login"
+    on:submit|preventDefault={signIn}
+    novalidate
+  >
     <div class="form-group">
       <label for="email">Email:</label>
       <input
@@ -24,6 +40,9 @@
         id="email"
         bind:value={userData.email}
       />
+      {#if errs.email}
+        <div class="mt-2 text-red">{errs.email}</div>
+      {/if}
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
@@ -35,6 +54,9 @@
         id="password"
         bind:value={userData.password}
       />
+      {#if errs.password}
+        <div class="mt-2 text-red">{errs.password}</div>
+      {/if}
     </div>
     <button type="submit" class="btn btn-primary">SignIn</button>
   </form>
@@ -43,5 +65,9 @@
 <style>
   .login {
     width: 50vw;
+  }
+
+  .text-red {
+    color: red;
   }
 </style>

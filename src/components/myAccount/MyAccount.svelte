@@ -1,6 +1,12 @@
 <script>
-  // import { register } from "../../apis/auth";
-  import { auth } from "../../store";
+  import { onMount } from "svelte";
+
+  import { updateUserData, changePassword } from "../../apis/auth";
+  import { auth, errors } from "../../store";
+
+  onMount(() => {
+    errors.set({});
+  });
 
   let userData = {
     firstName: "",
@@ -11,14 +17,24 @@
     password2: "",
   };
 
+  let errs = {};
+
+  errors.subscribe((value) => {
+    errs = value;
+  });
+
   auth.user.subscribe((value) => {
     userData.firstName = value.firstName;
     userData.lastName = value.lastName;
     userData.email = value.email;
   });
 
-  const updateUser = () => {};
-  const changePW = () => {};
+  const updateUser = () => {
+    updateUserData(userData);
+  };
+  const changePW = () => {
+    changePassword(userData);
+  };
 </script>
 
 <div class="d-flex justify-content-between">
@@ -36,6 +52,9 @@
         id="firstName"
         bind:value={userData.firstName}
       />
+      {#if errs.firstName}
+        <div class="mt-2 text-red">{errs.firstName}</div>
+      {/if}
     </div>
     <div class="form-group">
       <label for="lastName">Last Name:</label>
@@ -47,6 +66,9 @@
         id="lastName"
         bind:value={userData.lastName}
       />
+      {#if errs.lastName}
+        <div class="mt-2 text-red">{errs.lastName}</div>
+      {/if}
     </div>
     <div class="form-group">
       <label for="email">Email:</label>
@@ -58,6 +80,9 @@
         id="email"
         bind:value={userData.email}
       />
+      {#if errs.email}
+        <div class="mt-2 text-red">{errs.email}</div>
+      {/if}
     </div>
     <button type="submit" class="btn btn-primary">Update</button>
   </form>
@@ -72,6 +97,9 @@
         id="oldPw"
         bind:value={userData.oldPw}
       />
+      {#if errs.oldPw}
+        <div class="mt-2 text-red">{errs.oldPw}</div>
+      {/if}
     </div>
     <div class="form-group">
       <label for="password">New Password:</label>
@@ -83,6 +111,9 @@
         id="password"
         bind:value={userData.password}
       />
+      {#if errs.password}
+        <div class="mt-2 text-red">{errs.password}</div>
+      {/if}
     </div>
     <div class="form-group">
       <label for="password2">Confirm Password:</label>
@@ -94,6 +125,9 @@
         id="password2"
         bind:value={userData.password2}
       />
+      {#if errs.password2}
+        <div class="mt-2 text-red">{errs.password2}</div>
+      {/if}
     </div>
     <button type="submit" class="btn btn-primary">Change Password</button>
   </form>
@@ -106,5 +140,9 @@
 
   .pw-form {
     width: 30vw;
+  }
+
+  .text-red {
+    color: red;
   }
 </style>

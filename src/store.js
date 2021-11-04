@@ -12,3 +12,5 @@ export const auth = {
   user: writable([]),
   isAuthenticated: writable(false)
 };
+
+export const errors = writable({});

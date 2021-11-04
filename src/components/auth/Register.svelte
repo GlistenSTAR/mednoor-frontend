@@ -1,5 +1,12 @@
 <script>
+  import { onMount } from "svelte";
+
   import { register } from "../../apis/auth";
+  import { errors } from "../../store";
+
+  onMount(() => {
+    errors.set({});
+  });
 
   let newUser = {
     firstName: "",
@@ -8,6 +15,12 @@
     password: "",
     password2: "",
   };
+
+  let errs = {};
+
+  errors.subscribe((value) => {
+    errs = value;
+  });
 
   const signUp = () => {
     register(newUser);
@@ -26,6 +39,9 @@
         id="firstName"
         bind:value={newUser.firstName}
       />
+      {#if errs.firstName}
+        <div class="mt-2 text-red">{errs.firstName}</div>
+      {/if}
     </div>
     <div class="form-group">
       <label for="lastName">Last Name:</label>
@@ -37,6 +53,9 @@
         id="lastName"
         bind:value={newUser.lastName}
       />
+      {#if errs.lastName}
+        <div class="mt-2 text-red">{errs.lastName}</div>
+      {/if}
     </div>
     <div class="form-group">
       <label for="email">Email:</label>
@@ -48,6 +67,9 @@
         id="email"
         bind:value={newUser.email}
       />
+      {#if errs.email}
+        <div class="mt-2 text-red">{errs.email}</div>
+      {/if}
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
@@ -59,6 +81,9 @@
         id="password"
         bind:value={newUser.password}
       />
+      {#if errs.password}
+        <div class="mt-2 text-red">{errs.password}</div>
+      {/if}
     </div>
     <div class="form-group">
       <label for="password2">Confirm Password:</label>
@@ -70,6 +95,9 @@
         id="password2"
         bind:value={newUser.password2}
       />
+      {#if errs.password2}
+        <div class="mt-2 text-red">{errs.password2}</div>
+      {/if}
     </div>
     <button type="submit" class="btn btn-primary">SignUp</button>
   </form>
@@ -78,5 +106,9 @@
 <style>
   .register {
     width: 50vw;
+  }
+
+  .text-red {
+    color: red;
   }
 </style>

@@ -1,7 +1,7 @@
 import { navigate } from 'svelte-navigator';
 
 import api from '../utils/api';
-import { auth } from '../store';
+import { auth, errors } from '../store';
 
 // Load User
 export const loadUser = async () => {
@@ -20,9 +20,11 @@ export const register = async newUser => {
   const res = await api.post('/users/signup', newUser);
 
   if (res.status === undefined) {
+    errors.set({});
     navigate('/', { replace: true });
   } else {
     console.log(res.data);
+    errors.set(res.data);
   }
 };
 
@@ -32,9 +34,12 @@ export const login = async userData => {
   if (res.status === undefined) {
     localStorage.setItem('token', res.token);
     auth.isAuthenticated.set(true);
+    loadUser();
+    errors.set({});
     navigate('/template', { replace: true });
   } else {
     console.log(res.data);
+    errors.set(res.data);
   }
 };
 
@@ -44,4 +49,29 @@ export const logout = async () => {
   auth.user.set([]);
   auth.isAuthenticated.set(false);
   navigate('/login', { replace: true });
+}
+
+// Update User
+export const updateUserData = async userData => {
+  const res = await api.put('/users/update/user', userData);
+  if (res.status === undefined) {
+    console.log(res.msg);
+    errors.set({});
+  } else {
+    console.log(res.data);
+    errors.set(res.data);
+  }
+}
+
+// Change password
+export const changePassword = async pwData => {
+  const res = await api.put('/users/changePw', pwData);
+
+  if (res.status === undefined) {
+    console.log(res.msg);
+    errors.set({});
+  } else {
+    console.log(res.data);
+    errors.set(res.data);
+  }
 }
