@@ -1,8 +1,10 @@
 <script>
   import { Router, Link } from "svelte-navigator";
 
+  import { search_result } from "../../store";
+
   import TempItem from "./TempItem.svelte";
-  import { searchTemplate } from "../../apis/template";
+  import { deleteTemplate, searchTemplate } from "../../apis/template";
 
   let searchKeys = {
     firstName: "",
@@ -12,8 +14,23 @@
 
   let temps = [];
 
+  search_result.subscribe((v) => {
+    temps = v;
+  });
+
   const searchTemp = async () => {
-    temps = await searchTemplate(searchKeys);
+    await searchTemplate(searchKeys);
+  };
+
+  const deleteTemp = async (e) => {
+    let removeIndex = temps.findIndex((temp) => {
+      return temp.id.toString() === e.target.id.toString();
+    });
+
+    temps.splice(removeIndex, 1);
+    search_result.set(temps);
+
+    deleteTemplate(e.target.id);
   };
 </script>
 
@@ -81,7 +98,7 @@
       </thead>
       <tbody>
         {#each temps as temp}
-          <TempItem template={temp} />
+          <TempItem template={temp} {deleteTemp} />
         {/each}
       </tbody>
     </table>

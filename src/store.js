@@ -14,3 +14,5 @@ export const auth = {
 };
 
 export const errors = writable({});
+export const search_result = writable([]);
+export const seletedTemp = writable([]);

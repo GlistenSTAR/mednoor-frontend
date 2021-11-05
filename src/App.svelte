@@ -12,6 +12,7 @@
 	import Register from "./components/auth/Register.svelte";
 	import Login from "./components/auth/Login.svelte";
 	import Template from "./components/template/Template.svelte";
+	import UpdateTemplate from "./components/template/UpdateTemplate.svelte";
 	import MyAccount from "./components/myAccount/MyAccount.svelte";
 	import Dashboard from "./components/dashboard/Dashboard.svelte";
 
@@ -36,6 +37,9 @@
 			<Route path="/login" component={Login} />
 			<PrivateRoute path="/dashboard/template">
 				<Template />
+			</PrivateRoute>
+			<PrivateRoute path="/dashboard/template/:tempId">
+				<UpdateTemplate />
 			</PrivateRoute>
 			<PrivateRoute path="/myAccount">
 				<MyAccount />
