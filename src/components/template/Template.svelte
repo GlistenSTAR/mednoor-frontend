@@ -1,4 +1,13 @@
 <script>
+  import { onMount } from "svelte";
+
+  import { errors } from "../../store";
+  import { saveTemplate } from "../../apis/template";
+
+  onMount(() => {
+    errors.set({});
+  });
+
   let tempData = {
     firstName: "",
     lastName: "",
@@ -28,54 +37,78 @@
       plan: "",
     },
   };
-  const saveTemp = () => {};
+
+  let errs = {};
+
+  errors.subscribe((value) => {
+    errs = value;
+  });
+
+  const saveTemp = () => {
+    saveTemplate(tempData);
+  };
 </script>
 
 <form on:submit|preventDefault={saveTemp}>
   <div class="container-fluid content-p">
     <!-- Patient Name, Date -->
     <div class="d-flex mb-4 patient-data">
-      <div class="form-inline">
-        <label for="firstName">First Name: </label>
-        <input
-          type="text"
-          name="firstName"
-          id="firstName"
-          class="form-control mx-2"
-          bind:value={tempData.firstName}
-          placeholder="Enter first name"
-        />
+      <div>
+        <div class="form-inline">
+          <label for="firstName">First Name: </label>
+          <input
+            type="text"
+            name="firstName"
+            id="firstName"
+            class="form-control mx-2"
+            bind:value={tempData.firstName}
+            placeholder="Enter first name"
+          />
+        </div>
+        {#if errs.firstName}
+          <div class="mt-2 ml-5 text-red">{errs.firstName}</div>
+        {/if}
       </div>
-      <div class="form-inline">
-        <label for="lastName">Last Name: </label>
-        <input
-          type="text"
-          name="lastName"
-          id="lastName"
-          class="form-control mx-2"
-          bind:value={tempData.lastName}
-          placeholder="Enter last name"
-        />
+      <div>
+        <div class="form-inline">
+          <label for="lastName">Last Name: </label>
+          <input
+            type="text"
+            name="lastName"
+            id="lastName"
+            class="form-control mx-2"
+            bind:value={tempData.lastName}
+            placeholder="Enter last name"
+          />
+        </div>
+        {#if errs.lastName}
+          <div class="mt-2 ml-5 text-red">{errs.lastName}</div>
+        {/if}
       </div>
-      <div class="form-inline">
-        <label for="date">Date: </label>
-        <input
-          type="text"
-          name="date"
-          id="date"
-          class="form-control mx-2"
-          value={tempData.date}
-          placeholder="Enter last name"
-          readonly
-        />
+      <div>
+        <div class="form-inline">
+          <label for="date">Date: </label>
+          <input
+            type="text"
+            name="date"
+            id="date"
+            class="form-control mx-2"
+            value={tempData.date}
+            placeholder="Enter last name"
+            readonly
+          />
+        </div>
+        {#if errs.lastName || errs.firstName}
+          <div class="mt-2 ml-5 text-red" />
+        {/if}
       </div>
     </div>
     <!-- History input -->
     <div class="container-fluid my-3 card">
       <ul class="nav nav-tabs card-header-pills" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#chiefComplaint"
-            >Chief Complaint</a
+          <a class="nav-link active" data-toggle="tab" href="#allergies"
+            >Allergies</a
           >
         </li>
         <li class="nav-item">
@@ -170,7 +203,7 @@
         />
       </div>
       <div class="form-group text-left">
-        <label for="respRate">Rest. Rate</label>
+        <label for="respRate">Resp. Rate</label>
         <input
           type="number"
           class="form-control state-input"
@@ -224,8 +257,8 @@
     <div class="container-fluid my-3 card">
       <ul class="nav nav-tabs card-header-pills" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#allergies"
-            >Allergies</a
+          <a class="nav-link active" data-toggle="tab" href="#chiefComplaint"
+            >Chief Complaint</a
           >
         </li>
         <li class="nav-item">
@@ -337,5 +370,9 @@
   .form-inline {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
+  }
+
+  .text-red {
+    color: red;
   }
 </style>
