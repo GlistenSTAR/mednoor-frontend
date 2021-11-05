@@ -22,15 +22,15 @@
     errs = value;
   });
 
-  const signUp = () => {
-    register(newUser);
+  const signUp = async () => {
+    await register(newUser);
   };
 </script>
 
 <div class="d-flex justify-content-center content-p">
   <form class="text-left py-3 register" on:submit|preventDefault={signUp}>
     <div class="form-group">
-      <label for="firstName">First Name:</label>
+      <label for="firstName">Firstname:</label>
       <input
         type="text"
         class="form-control"
@@ -44,7 +44,7 @@
       {/if}
     </div>
     <div class="form-group">
-      <label for="lastName">Last Name:</label>
+      <label for="lastName">Lastname:</label>
       <input
         type="text"
         class="form-control"

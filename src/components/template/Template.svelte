@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
 
   import { errors } from "../../store";
-  import { saveTemplate } from "../../apis/template";
+  import { saveTemplate, printTemplate } from "../../apis/template";
 
   onMount(() => {
     errors.set({});
@@ -12,6 +12,7 @@
     firstName: "",
     lastName: "",
     date: new Date().toISOString().substr(0, 10),
+    tempName: "",
     history: {
       allergies: "",
       currentMeds: "",
@@ -44,8 +45,12 @@
     errs = value;
   });
 
-  const saveTemp = () => {
-    saveTemplate(tempData);
+  const saveTemp = async () => {
+    await saveTemplate(tempData);
+  };
+
+  const printTemp = async () => {
+    await printTemplate(tempData);
   };
 </script>
 
@@ -55,7 +60,7 @@
     <div class="d-flex mb-4 patient-data">
       <div>
         <div class="form-inline">
-          <label for="firstName">First Name: </label>
+          <label for="firstName">Firstname: </label>
           <input
             type="text"
             name="firstName"
@@ -71,7 +76,7 @@
       </div>
       <div>
         <div class="form-inline">
-          <label for="lastName">Last Name: </label>
+          <label for="lastName">Lastname: </label>
           <input
             type="text"
             name="lastName"
@@ -337,7 +342,23 @@
     </div>
     <div class="d-flex justify-content-center">
       <button type="submit" class="btn btn-success btn-lg mx-2">Save</button>
-      <button type="button" class="btn btn-primary btn-lg mx-2">Print</button>
+      <button
+        type="button"
+        class="btn btn-primary btn-lg mx-2"
+        on:click={printTemp}>Print</button
+      >
+      <input
+        type="text"
+        placeholder="Enter template name"
+        name="tempName"
+        class="form-control form-control-lg temp-name"
+        bind:value={tempData.tempName}
+      />
+      {#if errs.tempName}
+        <div class="d-flex tempName-err ml-2">
+          <p class="text-red m-0">{errs.tempName}</p>
+        </div>
+      {/if}
     </div>
   </div>
 </form>
@@ -374,5 +395,13 @@
 
   .text-red {
     color: red;
+  }
+
+  .temp-name {
+    width: 15rem;
+  }
+
+  .tempName-err {
+    align-items: center;
   }
 </style>

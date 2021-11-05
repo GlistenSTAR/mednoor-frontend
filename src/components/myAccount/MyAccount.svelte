@@ -29,11 +29,11 @@
     userData.email = value.email;
   });
 
-  const updateUser = () => {
-    updateUserData(userData);
+  const updateUser = async () => {
+    await updateUserData(userData);
   };
-  const changePW = () => {
-    changePassword(userData);
+  const changePW = async () => {
+    await changePassword(userData);
   };
 </script>
 
@@ -43,7 +43,7 @@
     on:submit|preventDefault={updateUser}
   >
     <div class="form-group">
-      <label for="firstName">First Name:</label>
+      <label for="firstName">Firstname:</label>
       <input
         type="text"
         class="form-control"
@@ -57,7 +57,7 @@
       {/if}
     </div>
     <div class="form-group">
-      <label for="lastName">Last Name:</label>
+      <label for="lastName">Lastname:</label>
       <input
         type="text"
         class="form-control"

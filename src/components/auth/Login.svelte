@@ -19,8 +19,8 @@
     errs = value;
   });
 
-  const signIn = () => {
-    login(userData);
+  const signIn = async () => {
+    await login(userData);
   };
 </script>
 
