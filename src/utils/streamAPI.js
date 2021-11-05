@@ -9,7 +9,8 @@ apiURL.subscribe((value) => {
 
 // Create a instance of axios to use the same base url.
 const axiosAPI = axios.create({
-  baseURL
+  baseURL,
+  responseType: 'blob'
 });
 
 // Implement a method to execute all the request from here

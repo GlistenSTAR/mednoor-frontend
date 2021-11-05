@@ -33,8 +33,8 @@ export const printTemplate = async tempData => {
   const res = await api.post('/temps/printTemp', tempData);
 
   if (res.msg === 'success') {
-    console.log(res.msg);
     errors.set({});
+    window.open(`http://localhost:7000/${res.path}`);
   } else {
     console.log(res.data);
     errors.set(res.data);

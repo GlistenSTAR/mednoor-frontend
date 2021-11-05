@@ -12,7 +12,6 @@
     firstName: "",
     lastName: "",
     date: new Date().toISOString().substr(0, 10),
-    tempName: "",
     history: {
       allergies: "",
       currentMeds: "",
@@ -347,18 +346,6 @@
         class="btn btn-primary btn-lg mx-2"
         on:click={printTemp}>Print</button
       >
-      <input
-        type="text"
-        placeholder="Enter template name"
-        name="tempName"
-        class="form-control form-control-lg temp-name"
-        bind:value={tempData.tempName}
-      />
-      {#if errs.tempName}
-        <div class="d-flex tempName-err ml-2">
-          <p class="text-red m-0">{errs.tempName}</p>
-        </div>
-      {/if}
     </div>
   </div>
 </form>
@@ -395,13 +382,5 @@
 
   .text-red {
     color: red;
-  }
-
-  .temp-name {
-    width: 15rem;
-  }
-
-  .tempName-err {
-    align-items: center;
   }
 </style>
