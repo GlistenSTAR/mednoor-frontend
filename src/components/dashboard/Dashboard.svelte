@@ -114,8 +114,4 @@
   .form-group {
     width: 50vw;
   }
-
-  .text-red {
-    color: red;
-  }
 </style>
