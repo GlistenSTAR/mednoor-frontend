@@ -37,7 +37,7 @@
   };
 </script>
 
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between content-p">
   <form
     class="text-left py-3 update-form"
     on:submit|preventDefault={updateUser}
@@ -144,5 +144,10 @@
 
   .text-red {
     color: red;
+  }
+
+  .content-p {
+    padding-top: 5rem;
+    padding-bottom: 2rem;
   }
 </style>
