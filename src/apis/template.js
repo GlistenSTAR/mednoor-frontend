@@ -22,7 +22,7 @@ export const updateTemplate = async (tempData, tempId) => {
   if (res.msg === 'success') {
     console.log(res.msg);
     errors.set({});
-    return res;
+    return res.msg;
   } else {
     console.log(res.data);
     errors.set(res.data);

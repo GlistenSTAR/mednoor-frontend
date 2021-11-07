@@ -82,7 +82,8 @@
 
   const updateTemp = async () => {
     const res = await updateTemplate(tempData, tempId);
-    if (res.msg === "success") {
+
+    if (res === "success") {
       addNotification({
         text: "Successfully updated",
         position: "top-right",
@@ -124,6 +125,13 @@
       temp[updateIndex].plan = tempData.description.plan;
 
       search_result.set(temp);
+    } else {
+      addNotification({
+        text: "Error occured",
+        position: "top-right",
+        type: "danger",
+        removeAfter: 3000,
+      });
     }
   };
 

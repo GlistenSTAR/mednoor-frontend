@@ -57,6 +57,13 @@
         type: "success",
         removeAfter: 3000,
       });
+    } else {
+      addNotification({
+        text: "Error occured",
+        position: "top-right",
+        type: "danger",
+        removeAfter: 3000,
+      });
     }
   };
 
