@@ -1,8 +1,11 @@
 <script>
   import { onMount } from "svelte";
+  import { getNotificationsContext } from "svelte-notifications";
 
   import { errors } from "../../store";
   import { saveTemplate, printTemplate } from "../../apis/template";
+
+  const { addNotification } = getNotificationsContext();
 
   onMount(() => {
     errors.set({});
@@ -45,7 +48,16 @@
   });
 
   const saveTemp = async () => {
-    await saveTemplate(tempData);
+    const res = await saveTemplate(tempData);
+
+    if (res === "success") {
+      addNotification({
+        text: "Successfully saved",
+        position: "top-right",
+        type: "success",
+        removeAfter: 3000,
+      });
+    }
   };
 
   const printTemp = async () => {

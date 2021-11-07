@@ -1,10 +1,13 @@
 <script>
   import { onMount } from "svelte";
+  import { getNotificationsContext } from "svelte-notifications";
 
   import { errors, seletedTemp, search_result } from "../../store";
   import { updateTemplate, printTemplate } from "../../apis/template";
   import isEmpty from "../../utils/is-empty";
   import { navigate } from "svelte-navigator";
+
+  const { addNotification } = getNotificationsContext();
 
   onMount(() => {
     errors.set({});
@@ -49,25 +52,25 @@
       tempId = temp.id;
       tempData.firstName = temp.firstName;
       tempData.lastName = temp.lastName;
-      tempData.date = temp.Descriptions[0].date;
+      tempData.date = temp.date;
       tempData.history.allergies = temp.allergies;
       tempData.history.currentMeds = temp.currentMeds;
       tempData.history.medicalHistory = temp.medicalHistory;
       tempData.history.socialHistory = temp.socialHistory;
       tempData.history.familyHistory = temp.familyHistory;
-      tempData.state.bp = temp.PatientStates[0].bp;
-      tempData.state.pulse = temp.PatientStates[0].pulse;
-      tempData.state.respRate = temp.PatientStates[0].respRate;
-      tempData.state.temp = temp.PatientStates[0].temp;
-      tempData.state.height = temp.PatientStates[0].height;
-      tempData.state.weight = temp.PatientStates[0].weight;
-      tempData.state.bmi = temp.PatientStates[0].bmi;
-      tempData.description.chiefComplaint = temp.Descriptions[0].chiefComplaint;
-      tempData.description.hpi = temp.Descriptions[0].hpi;
-      tempData.description.subject = temp.Descriptions[0].subject;
-      tempData.description.objective = temp.Descriptions[0].objective;
-      tempData.description.assessment = temp.Descriptions[0].assessment;
-      tempData.description.plan = temp.Descriptions[0].plan;
+      tempData.state.bp = temp.bp;
+      tempData.state.pulse = temp.pulse;
+      tempData.state.respRate = temp.respRate;
+      tempData.state.temp = temp.temp;
+      tempData.state.height = temp.height;
+      tempData.state.weight = temp.weight;
+      tempData.state.bmi = temp.bmi;
+      tempData.description.chiefComplaint = temp.chiefComplaint;
+      tempData.description.hpi = temp.hpi;
+      tempData.description.subject = temp.subject;
+      tempData.description.objective = temp.objective;
+      tempData.description.assessment = temp.assessment;
+      tempData.description.plan = temp.plan;
     }
   });
 
@@ -80,6 +83,13 @@
   const updateTemp = async () => {
     const res = await updateTemplate(tempData, tempId);
     if (res.msg === "success") {
+      addNotification({
+        text: "Successfully updated",
+        position: "top-right",
+        type: "success",
+        removeAfter: 3000,
+      });
+
       let temp = [];
       search_result.subscribe((v) => {
         temp = v;
@@ -90,20 +100,28 @@
 
       temp[updateIndex].firstName = tempData.firstName;
       temp[updateIndex].lastName = tempData.lastName;
-      temp[updateIndex].allergies = tempData.state.allergies;
-      temp[updateIndex].currentMeds = tempData.state.currentMeds;
-      temp[updateIndex].medicalHistory = tempData.state.medicalHistory;
-      temp[updateIndex].socialHistory = tempData.state.socialHistory;
-      temp[updateIndex].familyHistory = tempData.state.familyHistory;
-      temp[updateIndex].Descriptions[0].chiefComplaint =
-        tempData.description.chiefComplaint;
-      temp[updateIndex].Descriptions[0].hpi = tempData.description.hpi;
-      temp[updateIndex].Descriptions[0].subject = tempData.description.subject;
-      temp[updateIndex].Descriptions[0].objective =
-        tempData.description.objective;
-      temp[updateIndex].Descriptions[0].assessment =
-        tempData.description.assessment;
-      temp[updateIndex].Descriptions[0].plan = tempData.description.plan;
+      temp[updateIndex].date = tempData.date;
+
+      temp[updateIndex].allergies = tempData.history.allergies;
+      temp[updateIndex].currentMeds = tempData.history.currentMeds;
+      temp[updateIndex].medicalHistory = tempData.history.medicalHistory;
+      temp[updateIndex].socialHistory = tempData.history.socialHistory;
+      temp[updateIndex].familyHistory = tempData.history.familyHistory;
+
+      temp[updateIndex].bp = tempData.state.bp;
+      temp[updateIndex].pulse = tempData.state.pulse;
+      temp[updateIndex].respRate = tempData.state.respRate;
+      temp[updateIndex].temp = tempData.state.temp;
+      temp[updateIndex].height = tempData.state.height;
+      temp[updateIndex].wight = tempData.state.wight;
+      temp[updateIndex].bmi = tempData.state.bmi;
+
+      temp[updateIndex].chiefComplaint = tempData.description.chiefComplaint;
+      temp[updateIndex].hpi = tempData.description.hpi;
+      temp[updateIndex].subject = tempData.description.subject;
+      temp[updateIndex].objective = tempData.description.objective;
+      temp[updateIndex].assessment = tempData.description.assessment;
+      temp[updateIndex].plan = tempData.description.plan;
 
       search_result.set(temp);
     }

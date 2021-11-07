@@ -20,7 +20,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "sirv-cli": "^1.0.0",
-    "svelte-navigator": "^3.1.5"
+    "svelte-navigator": "^3.1.5",
+    "svelte-notifications": "^0.9.91"
   },
   "proxy": "http://localhost:7000"
 }

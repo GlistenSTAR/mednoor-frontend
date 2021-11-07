@@ -1,8 +1,11 @@
 <script>
   import { onMount } from "svelte";
+  import { getNotificationsContext } from "svelte-notifications";
 
   import { register } from "../../apis/auth";
   import { errors } from "../../store";
+
+  const { addNotification } = getNotificationsContext();
 
   onMount(() => {
     errors.set({});
@@ -23,7 +26,15 @@
   });
 
   const signUp = async () => {
-    await register(newUser);
+    const res = await register(newUser);
+    if (res === "success") {
+      addNotification({
+        text: "Successfully registered",
+        position: "top-right",
+        type: "success",
+        removeAfter: 3000,
+      });
+    }
   };
 </script>
 

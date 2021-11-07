@@ -15,7 +15,7 @@
 <tr>
   <td>{template.firstName}</td>
   <td>{template.lastName}</td>
-  <td>{template.Descriptions[0].date}</td>
+  <td>{template.date}</td>
   <td
     ><button type="button" class="btn btn-primary btn-sm" on:click={selectTemp}
       >Select</button

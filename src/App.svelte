@@ -1,6 +1,7 @@
 <script>
 	import { Router, Route } from "svelte-navigator";
 	import { onMount } from "svelte";
+	import Notifications from "svelte-notifications";
 
 	import { loadUser, logout } from "./apis/auth";
 
@@ -29,27 +30,29 @@
 </script>
 
 <main class="bg-light">
-	<Nabvar />
-	<div class="container">
-		<Router {url}>
-			<Route path="/" component={Landing} />
-			<Route path="/register" component={Register} />
-			<Route path="/login" component={Login} />
-			<PrivateRoute path="/dashboard/template">
-				<Template />
-			</PrivateRoute>
-			<PrivateRoute path="/dashboard/template/:tempId">
-				<UpdateTemplate />
-			</PrivateRoute>
-			<PrivateRoute path="/myAccount">
-				<MyAccount />
-			</PrivateRoute>
-			<PrivateRoute path="/dashboard">
-				<Dashboard />
-			</PrivateRoute>
-		</Router>
-	</div>
-	<Footer />
+	<Notifications>
+		<Nabvar />
+		<div class="container">
+			<Router {url}>
+				<Route path="/" component={Landing} />
+				<Route path="/register" component={Register} />
+				<Route path="/login" component={Login} />
+				<PrivateRoute path="/dashboard/template">
+					<Template />
+				</PrivateRoute>
+				<PrivateRoute path="/dashboard/template/:tempId">
+					<UpdateTemplate />
+				</PrivateRoute>
+				<PrivateRoute path="/myAccount">
+					<MyAccount />
+				</PrivateRoute>
+				<PrivateRoute path="/dashboard">
+					<Dashboard />
+				</PrivateRoute>
+			</Router>
+		</div>
+		<Footer />
+	</Notifications>
 </main>
 
 <style>

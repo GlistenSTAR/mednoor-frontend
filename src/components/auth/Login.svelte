@@ -1,8 +1,11 @@
 <script>
   import { onMount } from "svelte";
+  import { getNotificationsContext } from "svelte-notifications";
 
   import { login } from "../../apis/auth";
   import { errors } from "../../store";
+
+  const { addNotification } = getNotificationsContext();
 
   onMount(() => {
     errors.set({});
@@ -20,7 +23,15 @@
   });
 
   const signIn = async () => {
-    await login(userData);
+    const res = await login(userData);
+    if (res === "success") {
+      addNotification({
+        text: "You successfully logged in",
+        position: "top-right",
+        type: "success",
+        removeAfter: 3000,
+      });
+    }
   };
 </script>
 

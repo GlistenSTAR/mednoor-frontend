@@ -1,10 +1,13 @@
 <script>
   import { Router, Link } from "svelte-navigator";
+  import { getNotificationsContext } from "svelte-notifications";
 
   import { search_result } from "../../store";
 
   import TempItem from "./TempItem.svelte";
   import { deleteTemplate, searchTemplate } from "../../apis/template";
+
+  const { addNotification } = getNotificationsContext();
 
   let searchKeys = {
     firstName: "",
@@ -30,7 +33,16 @@
     temps.splice(removeIndex, 1);
     search_result.set(temps);
 
-    deleteTemplate(e.target.id);
+    const res = await deleteTemplate(e.target.id);
+
+    if (res === "success") {
+      addNotification({
+        text: "Successfully deleted",
+        position: "top-right",
+        type: "success",
+        removeAfter: 3000,
+      });
+    }
   };
 </script>
 

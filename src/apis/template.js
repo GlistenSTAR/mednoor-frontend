@@ -8,6 +8,7 @@ export const saveTemplate = async tempData => {
   if (res.msg === 'success') {
     console.log(res.msg);
     errors.set({});
+    return res.msg;
   } else {
     console.log(res.data);
     errors.set(res.data);
@@ -58,6 +59,7 @@ export const deleteTemplate = async tempId => {
 
   if (res.msg === 'success') {
     console.log(res.msg);
+    return res.msg;
   } else {
     console.log(res.data);
   }

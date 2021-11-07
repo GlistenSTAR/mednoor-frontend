@@ -22,6 +22,7 @@ export const register = async newUser => {
   if (res.msg === 'success') {
     errors.set({});
     navigate('/', { replace: true });
+    return res.msg;
   } else {
     console.log(res.data);
     errors.set(res.data);
@@ -37,6 +38,7 @@ export const login = async userData => {
     loadUser();
     errors.set({});
     navigate('/dashboard', { replace: true });
+    return res.msg;
   } else {
     console.log(res.data);
     errors.set(res.data);
