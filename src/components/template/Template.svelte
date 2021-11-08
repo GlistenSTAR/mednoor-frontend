@@ -3,7 +3,11 @@
   import { getNotificationsContext } from "svelte-notifications";
 
   import { errors } from "../../store";
-  import { saveTemplate, printTemplate } from "../../apis/template";
+  import {
+    saveTemplate,
+    printTemplate,
+    createAndUpdateModel,
+  } from "../../apis/template";
 
   const { addNotification } = getNotificationsContext();
 
@@ -12,6 +16,7 @@
   });
 
   let tempData = {
+    modelName: "",
     firstName: "",
     lastName: "",
     date: new Date().toISOString().substr(0, 10),
@@ -23,13 +28,13 @@
       familyHistory: "",
     },
     state: {
-      bp: 0,
-      pulse: 0,
-      respRate: 0,
-      temp: 0,
-      height: 0,
-      weight: 0,
-      bmi: 0,
+      bp: "",
+      pulse: "",
+      respRate: "",
+      temp: "",
+      height: "",
+      weight: "",
+      bmi: "",
     },
     description: {
       chiefComplaint: "",
@@ -47,12 +52,23 @@
     errs = value;
   });
 
+  const computeBMI = () => {
+    if (tempData.state.height !== "" && tempData.state.weight !== "") {
+      let bmi =
+        (tempData.state.weight /
+          tempData.state.height /
+          tempData.state.height) *
+        703;
+      tempData.state.bmi = bmi.toFixed(2);
+    }
+  };
+
   const saveTemp = async () => {
     const res = await saveTemplate(tempData);
 
     if (res === "success") {
       addNotification({
-        text: "Successfully saved",
+        text: "Template successfully saved",
         position: "top-right",
         type: "success",
         removeAfter: 3000,
@@ -67,6 +83,19 @@
     }
   };
 
+  const modelCreateAndUpdate = async () => {
+    const res = await createAndUpdateModel(tempData);
+
+    if (res === "success") {
+      addNotification({
+        text: "Model successfully saved",
+        position: "top-right",
+        type: "success",
+        removeAfter: 3000,
+      });
+    }
+  };
+
   const printTemp = async () => {
     await printTemplate(tempData);
   };
@@ -74,6 +103,22 @@
 
 <form on:submit|preventDefault={saveTemp}>
   <div class="container-fluid content-p">
+    <div class="d-flex model-name">
+      <div class="form-inline">
+        <label for="modelName">Model Name: </label>
+        <input
+          type="text"
+          name="modelName"
+          id="modelName"
+          class="form-control mx-2"
+          bind:value={tempData.modelName}
+          placeholder="Enter model name"
+        />
+      </div>
+      {#if errs.modelName}
+        <div class="ml-2 text-red">{errs.modelName}</div>
+      {/if}
+    </div>
     <!-- Patient Name, Date -->
     <div class="d-flex mb-4 patient-data">
       <div>
@@ -129,27 +174,27 @@
     <!-- History input -->
     <div class="container-fluid my-3 card">
       <ul class="nav nav-tabs card-header-pills" role="tablist">
-        <li class="nav-item">
+        <li class="nav-item" on:click={saveTemp}>
           <a class="nav-link active" data-toggle="tab" href="#allergies"
             >Allergies</a
           >
         </li>
-        <li class="nav-item">
+        <li class="nav-item" on:click={saveTemp}>
           <a class="nav-link" data-toggle="tab" href="#currentMeds"
             >Current Meds</a
           >
         </li>
-        <li class="nav-item">
+        <li class="nav-item" on:click={saveTemp}>
           <a class="nav-link" data-toggle="tab" href="#medicalHistory"
             >Medical History</a
           >
         </li>
-        <li class="nav-item">
+        <li class="nav-item" on:click={saveTemp}>
           <a class="nav-link" data-toggle="tab" href="#socialHistory"
             >Social History</a
           >
         </li>
-        <li class="nav-item">
+        <li class="nav-item" on:click={saveTemp}>
           <a class="nav-link" data-toggle="tab" href="#familyHistory"
             >Family History</a
           >
@@ -208,7 +253,7 @@
       <div class="form-group text-left">
         <label for="bp">BP</label>
         <input
-          type="number"
+          type="text"
           class="form-control state-input"
           id="bp"
           name="bp"
@@ -246,23 +291,25 @@
         />
       </div>
       <div class="form-group text-left">
-        <label for="height">Height</label>
+        <label for="height">Height(in)</label>
         <input
           type="number"
           class="form-control state-input"
           id="height"
           name="height"
           bind:value={tempData.state.height}
+          on:change={computeBMI}
         />
       </div>
       <div class="form-group text-left">
-        <label for="weight">Weight</label>
+        <label for="weight">Weight(lb)</label>
         <input
           type="number"
           class="form-control state-input"
           id="weight"
           name="weight"
           bind:value={tempData.state.weight}
+          on:change={computeBMI}
         />
       </div>
       <div class="form-group text-left">
@@ -272,32 +319,33 @@
           class="form-control state-input"
           id="bmi"
           name="bmi"
-          bind:value={tempData.state.bmi}
+          value={tempData.state.bmi}
+          readonly
         />
       </div>
     </div>
     <!-- Description -->
     <div class="container-fluid my-3 card">
       <ul class="nav nav-tabs card-header-pills" role="tablist">
-        <li class="nav-item">
+        <li class="nav-item" on:click={saveTemp}>
           <a class="nav-link active" data-toggle="tab" href="#chiefComplaint"
             >Chief Complaint</a
           >
         </li>
-        <li class="nav-item">
+        <li class="nav-item" on:click={saveTemp}>
           <a class="nav-link" data-toggle="tab" href="#hpi">HPI</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" on:click={saveTemp}>
           <a class="nav-link" data-toggle="tab" href="#subject">Subject</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" on:click={saveTemp}>
           <a class="nav-link" data-toggle="tab" href="#objective">Objective</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" on:click={saveTemp}>
           <a class="nav-link" data-toggle="tab" href="#assessment">Assessment</a
           >
         </li>
-        <li class="nav-item">
+        <li class="nav-item" on:click={saveTemp}>
           <a class="nav-link" data-toggle="tab" href="#plan">Plan</a>
         </li>
       </ul>
@@ -362,6 +410,11 @@
       <button type="submit" class="btn btn-success btn-lg mx-2">Save</button>
       <button
         type="button"
+        class="btn btn-success btn-lg mx-2"
+        on:click={modelCreateAndUpdate}>Create and Update Model</button
+      >
+      <button
+        type="button"
         class="btn btn-primary btn-lg mx-2"
         on:click={printTemp}>Print</button
       >
@@ -401,5 +454,15 @@
 
   .text-red {
     color: red;
+  }
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .model-name {
+    align-items: center;
   }
 </style>

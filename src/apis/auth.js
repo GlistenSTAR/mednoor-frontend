@@ -1,7 +1,7 @@
 import { navigate } from 'svelte-navigator';
 
 import api from '../utils/api';
-import { auth, errors } from '../store';
+import { auth, errors, search_result, seletedTemp } from '../store';
 
 // Load User
 export const loadUser = async () => {
@@ -50,6 +50,9 @@ export const logout = async () => {
   localStorage.removeItem('token');
   auth.user.set([]);
   auth.isAuthenticated.set(false);
+  errors.set({});
+  seletedTemp.set([]);
+  search_result.set([]);
   navigate('/login', { replace: true });
 }
 
