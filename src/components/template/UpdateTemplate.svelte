@@ -58,7 +58,11 @@
       tempData.modelName = temp.modelName;
       tempData.firstName = temp.firstName;
       tempData.lastName = temp.lastName;
-      tempData.date = temp.date;
+      if (isEmpty(temp.modelName)) {
+        tempData.date = temp.date;
+      } else {
+        tempData.date = new Date().toISOString().substr(0, 10);
+      }
       tempData.history.allergies = temp.allergies;
       tempData.history.currentMeds = temp.currentMeds;
       tempData.history.medicalHistory = temp.medicalHistory;
@@ -112,36 +116,39 @@
       search_result.subscribe((v) => {
         temp = v;
       });
+
       const updateIndex = temp.findIndex((temp) => {
         return temp.id.toString() === tempId.toString();
       });
 
-      temp[updateIndex].firstName = tempData.firstName;
-      temp[updateIndex].lastName = tempData.lastName;
-      temp[updateIndex].date = tempData.date;
+      if (updateIndex !== -1) {
+        temp[updateIndex].firstName = tempData.firstName;
+        temp[updateIndex].lastName = tempData.lastName;
+        temp[updateIndex].date = tempData.date;
 
-      temp[updateIndex].allergies = tempData.history.allergies;
-      temp[updateIndex].currentMeds = tempData.history.currentMeds;
-      temp[updateIndex].medicalHistory = tempData.history.medicalHistory;
-      temp[updateIndex].socialHistory = tempData.history.socialHistory;
-      temp[updateIndex].familyHistory = tempData.history.familyHistory;
+        temp[updateIndex].allergies = tempData.history.allergies;
+        temp[updateIndex].currentMeds = tempData.history.currentMeds;
+        temp[updateIndex].medicalHistory = tempData.history.medicalHistory;
+        temp[updateIndex].socialHistory = tempData.history.socialHistory;
+        temp[updateIndex].familyHistory = tempData.history.familyHistory;
 
-      temp[updateIndex].bp = tempData.state.bp;
-      temp[updateIndex].pulse = tempData.state.pulse;
-      temp[updateIndex].respRate = tempData.state.respRate;
-      temp[updateIndex].temp = tempData.state.temp;
-      temp[updateIndex].height = tempData.state.height;
-      temp[updateIndex].wight = tempData.state.wight;
-      temp[updateIndex].bmi = tempData.state.bmi;
+        temp[updateIndex].bp = tempData.state.bp;
+        temp[updateIndex].pulse = tempData.state.pulse;
+        temp[updateIndex].respRate = tempData.state.respRate;
+        temp[updateIndex].temp = tempData.state.temp;
+        temp[updateIndex].height = tempData.state.height;
+        temp[updateIndex].wight = tempData.state.wight;
+        temp[updateIndex].bmi = tempData.state.bmi;
 
-      temp[updateIndex].chiefComplaint = tempData.description.chiefComplaint;
-      temp[updateIndex].hpi = tempData.description.hpi;
-      temp[updateIndex].subject = tempData.description.subject;
-      temp[updateIndex].objective = tempData.description.objective;
-      temp[updateIndex].assessment = tempData.description.assessment;
-      temp[updateIndex].plan = tempData.description.plan;
+        temp[updateIndex].chiefComplaint = tempData.description.chiefComplaint;
+        temp[updateIndex].hpi = tempData.description.hpi;
+        temp[updateIndex].subject = tempData.description.subject;
+        temp[updateIndex].objective = tempData.description.objective;
+        temp[updateIndex].assessment = tempData.description.assessment;
+        temp[updateIndex].plan = tempData.description.plan;
 
-      search_result.set(temp);
+        search_result.set(temp);
+      }
     } else {
       addNotification({
         text: "Error occured",
@@ -474,7 +481,12 @@
       </div>
     </div>
     <div class="d-flex justify-content-center">
-      <button type="submit" class="btn btn-success btn-lg mx-2">Update</button>
+      {#if !isEmpty(tempData.modelName)}
+        <button type="submit" class="btn btn-success btn-lg mx-2">Save</button>
+      {:else}
+        <button type="submit" class="btn btn-success btn-lg mx-2">Update</button
+        >
+      {/if}
       <button
         type="button"
         class="btn btn-success btn-lg mx-2"
